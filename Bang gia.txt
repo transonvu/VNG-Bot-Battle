@@ -1,0 +1,10 @@
+Động cơ 150 * 2 -> 300k
+Bánh bi 35k x 2 -> 70k
+Bánh nhôm 190k x 2 -> 380k
+Chích điện 500k
+Rào sắt ~250k
+
+Pin
+Hộp mica
+
+=> ~1500k
