@@ -65,7 +65,7 @@ void onDataWritten(const GattWriteCallbackParams *params) {
     // ble.updateCharacteristicValue(uartServicePtr->getRXCharacteristicHandle(), params->data, bytesRead); // phản hồi dữ liệu cho master
 }
 
-void executesCommand() {
+void executeCommand() {
 	Serial.println(buffer[0]);
 	switch (buffer[0]) {
 		case UP:
