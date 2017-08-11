@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.transonvu.vngbotbattle.MainActivity"
+    tools:showIn="@layout/activity_main">
+
+    <io.github.controlwear.virtual.joystick.android.JoystickView
+        xmlns:custom="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/joystickView"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="16dp"
+        custom:JV_borderWidth="8dp"
+        custom:JV_backgroundColor="#009688"
+        custom:JV_borderColor="#00796B"
+        custom:JV_buttonColor="#FF6E40"
+        custom:JV_fixedCenter="true"
+        />
+
+    <android.widget.LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="48dp"
+        >
+        <Button
+            android:id="@+id/button_change"
+            android:layout_width="128dp"
+            android:layout_height="64dp"
+            android:text="@string/button_change"
+            android:textSize="24dp"
+            />
+
+        <Button
+            android:id="@+id/button_attack"
+            android:layout_width="128dp"
+            android:layout_height="64dp"
+            android:text="@string/button_attack"
+            android:textSize="24dp"
+            />
+
+        <Button
+            android:id="@+id/button_stop"
+            android:layout_width="128dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="32dp"
+            android:text="@string/button_stop"
+            android:textSize="24dp"
+            />
+    </android.widget.LinearLayout>
+</android.widget.RelativeLayout>
