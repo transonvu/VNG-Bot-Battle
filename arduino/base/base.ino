@@ -36,6 +36,7 @@ UARTService *uartServicePtr;
 Ticker waitingPswdTicker;
 
 int bitInvert = 0; // not invert
+volatile bool isReceivedFirstMsg = false;
 volatile bool isValidConnection = false;
 volatile uint8_t buffer[255];
 
@@ -43,7 +44,7 @@ volatile uint8_t buffer[255];
 void turnOffSystem();
 
 void clockCallback() {
-    if (isValidConnection) waitingPswdTicker.detach();
+    if (isReceivedFirstMsg) waitingPswdTicker.detach();
     else ble.disconnect(Gap::CONNECTION_TIMEOUT);
 }
 
@@ -52,8 +53,9 @@ void disconnectionCallBack(const Gap::DisconnectionCallbackParams_t *params) {
 	Serial.println("Disconnected!");
 	Serial.println("Restarting the advertising process");
 #endif
-	if (isValidConnection) isValidConnection = false;
+	if (isReceivedFirstMsg) isReceivedFirstMsg = false;
 	else waitingPswdTicker.detach();
+	isValidConnection = false;
 	turnOffSystem();
 	ble.startAdvertising();
 }
@@ -81,7 +83,7 @@ void onDataWritten(const GattWriteCallbackParams *params) {
 	for (uint16_t iData = 0; iData < bytesRead; ++iData) {
 		buffer[iData] = params->data[iData];
 	}
-	
+	if (!isReceivedFirstMsg) isReceivedFirstMsg = true;
     // ble.updateCharacteristicValue(uartServicePtr->getRXCharacteristicHandle(), params->data, bytesRead); // phản hồi dữ liệu cho master
 }
 
@@ -182,7 +184,7 @@ void setup() {
 
 void loop() {
 	ble.waitForEvent();
-	if (buffer[0] != 0) {
+	if (isReceivedFirstMsg) {
 		// Is valid connection?
 		verifyConnection();
 		// Connected
