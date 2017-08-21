@@ -36,8 +36,8 @@ UARTService *uartServicePtr;
 Ticker waitingPswdTicker;
 
 int bitInvert = 0; // not invert
-volatile bool isReceivedFirstMsg = false;
-volatile bool isValidConnection = false;
+volatile bool isReceivedFirstMsg = true;
+volatile bool isValidConnection = true;
 volatile uint8_t buffer[255];
 
 
@@ -64,11 +64,12 @@ void connectionCallBack(const Gap::ConnectionCallbackParams_t *params) {
 #ifdef DEBUG
 	Serial.println("Connected!");
 #endif
-	waitingPswdTicker.attach(&clockCallback, 0.5); // waiting for password (limited 0.5s)
+	waitingPswdTicker.attach(&clockCallback, 1); // waiting for password (limited 0.5s)
 }
 
 // Nhận được dữ liệu từ master (điện thoại)
 void onDataWritten(const GattWriteCallbackParams *params) {
+	if (!isReceivedFirstMsg) isReceivedFirstMsg = true;
 #ifdef DEBUG
     Serial.print("Length: ");
     Serial.println(params->len);
@@ -83,19 +84,18 @@ void onDataWritten(const GattWriteCallbackParams *params) {
 	for (uint16_t iData = 0; iData < bytesRead; ++iData) {
 		buffer[iData] = params->data[iData];
 	}
-	if (!isReceivedFirstMsg) isReceivedFirstMsg = true;
     // ble.updateCharacteristicValue(uartServicePtr->getRXCharacteristicHandle(), params->data, bytesRead); // phản hồi dữ liệu cho master
 }
 
 void turnOffMotors() {
 	Relay_1A = 0;
 	Relay_1B = 0;
-	Relay_2A = 0;
-	Relay_2B = 0;
+	// Relay_2A = 0;
+	// Relay_2B = 0;
 	Relay_3A = 0;
 	Relay_3B = 0;
-	Relay_4A = 0;
-	Relay_4B = 0;
+	// Relay_4A = 0;
+	// Relay_4B = 0;
 	delayMicroseconds(100);
 }
 
@@ -110,8 +110,10 @@ void runLeftMotor(int cmd) {
 		Relay_1A = 1 ^ bitInvert;
 		Relay_1B = 0 ^ bitInvert;
 	} else if (cmd == DOWN || cmd == LEFT) {
-		Relay_2A = 0 ^ bitInvert;
-		Relay_2B = 1 ^ bitInvert;
+		// Relay_2A = 0 ^ bitInvert;
+		// Relay_2B = 1 ^ bitInvert;
+		Relay_1A = 0 ^ bitInvert;
+		Relay_1B = 1 ^ bitInvert;
 	}
 }
 
@@ -120,8 +122,10 @@ void runRightMotor(int cmd) {
 		Relay_3A = 1 ^ bitInvert;
 		Relay_3B = 0 ^ bitInvert;
 	} else if (cmd == DOWN || cmd == LEFT) {
-		Relay_4A = 0 ^ bitInvert;
-		Relay_4B = 1 ^ bitInvert;
+		// Relay_4A = 0 ^ bitInvert;
+		// Relay_4B = 1 ^ bitInvert;
+		Relay_3A = 0 ^ bitInvert;
+		Relay_3B = 1 ^ bitInvert;
 	}
 }
 
